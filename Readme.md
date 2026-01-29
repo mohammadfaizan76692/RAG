@@ -1,46 +1,83 @@
-# RAG (Retrieval Augmented Generation)
-## Week1
-## Rag Introduction
-1) What is Rag
-2) Prompt Creating Using Relevant Documents/Data
-3) Why Do we Need: Lastest Information (As Transformer Can Be Trained on Data with upto some specific years)
-                    : Private and Sensity Data 
-                    : Reduce Halluciations in Transformers
+# RAG (Retrieval-Augmented Generation)
 
-4) Simple Flow -> query -> relevant doc(Vector DB) -> Augmented Prompt (Relevant Document + query) -> LLMS -> Response
+## Week 1
+
+### RAG Introduction
+
+1. What is RAG  
+2. Prompt Creating Using Relevant Documents/Data  
+3. Why Do We Need  
+   - Latest Information (Transformers are trained on data up to specific years)
+   - Private and Sensitive Data
+   - Reduce Hallucinations in Transformers  
+
+4. Simple Flow  
 
 
-## Week2
+---
+
+## Week 2
+
 ### Information Retrieval and Search Foundation
-1) Keyword search: Word Matching
-2) Semantic Search: Similar Meaning, without Matching Words
-3) MetaData Filtering: Excludes documents based on rigid Criteria (It Doesn't Perform Retrival But Narrow Down the Results based on User Attribute Not Query)
-4) Keyword Search TFIDF, Term Frequency INVERSE DOCUMENT FREQUENCY
-	Bag of Word : Vector of Size Vocubulary at each index Frequency of Word appear in that document other wise 0.
-	d1 -> v1 vector, d2 -> v2 vector, d3 -> v3 vector .......... dn -> vn vector , all vector is of same size as vocubulary, lets say m
-	we can create matrix of mXn each column is documents vector and each row tells words frequency in each documents ,or word presence if freq>0
-	
-	Now for a prompt "Hello World"
-	In documents , out of two words Hello, World how may are present
-	The matrix we can create above first go to Hello row, where frequency >0 -> give 1 to it else zero in that column
-	Now for each Document = [columns.sum()]/[len(column)or Vocab size]  gives score 0 to 1 , gave highest score documents
-	
-	Cons: Just Presence of Word Matter Not Frequency (doesn't capture , keywords contains multiple times)[No Frequency Handling]
-	
-	Handle:
-	Term Frequency Score: Not Just gives 1 or 0, Just Capture frequecy and Sum the freqeuncies accross columns 
-	And Do the Normalization by Number of Words in Document.
-	
-	Cons: Give Common Words and Rare Words Same Importance [No Difference Between Rare and Common Words in Documents]
-	Handle:
-	Document Frequency : [Number of Documents it appears in]/ [Total number of Document]
-	More DF , More Common
-	Inverse Document Frequency: 1/DF, for Normalization taking log of it log(1/df).
-	
-	calculating IDF Value For Each Word in System Vocubulary.
-	TFIDF: TF Matrix * IDF Matrix
-	
-5) Best Matching 25: BM25 (its 25 score or Formula Produced by its makers)
-	Introduce
-		 Term Frequency Saturation
-		 Document length Normalization: better way to Nomalizing TF Score Not Just divide by length of document, it regressously Panalized
+
+1. Keyword Search  
+- Word Matching  
+
+2. Semantic Search  
+- Similar meaning without matching words  
+
+3. Metadata Filtering  
+- Excludes documents based on rigid criteria  
+- Does not perform retrieval  
+- Narrows results based on user attributes, not query  
+
+4. Keyword Search: TF-IDF (Term Frequency – Inverse Document Frequency)
+
+**Bag of Words**
+- Vector size = vocabulary size  
+- Each index represents frequency of a word in the document (0 if absent)
+
+
+- All vectors have the same size (vocabulary size = m)
+- Matrix size = m × n  
+  - Columns → documents  
+  - Rows → word frequencies  
+
+**Example Query:** `Hello World`
+
+- Check rows for `Hello` and `World`
+- Frequency > 0 → 1, else 0
+- Score per document:
+  ```
+  column.sum() / vocab_size
+  ```
+
+**Cons**
+- Word presence matters, not frequency  
+
+**Term Frequency (TF)**
+- Captures word frequency
+- Sum frequencies across columns
+- Normalize by number of words in document  
+
+**Cons**
+- Common and rare words treated equally  
+
+**Document Frequency (DF)**
+DF = Number of documents containing word / Total documents
+
+**Inverse Document Frequency (IDF)**
+IDF = log(1 / DF)
+
+
+**TF-IDF**
+TF-IDF = TF Matrix × IDF Matrix
+
+5. BM25 (Best Matching 25)
+
+- Ranking function derived from TF-IDF  
+
+**Improvements**
+- Term Frequency Saturation  
+- Document Length Normalization (better than simple length division)
+
