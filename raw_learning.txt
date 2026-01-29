@@ -1,0 +1,34 @@
+RAG
+Information Retrieval and Search Foundation
+1) Keyword search: Word Matching
+2) Semantic Search: Similar Meaning, without Matching Words
+3) MetaData Filtering: Excludes documents based on rigid Criteria (It Doesn't Perform Retrival But Narrow Down the Results based on User Attribute Not Query)
+4) Keyword Search TFIDF, Term Frequency INVERSE DOCUMENT FREQUENCY
+	Bag of Word : Vector of Size Vocubulary at each index Frequency of Word appear in that document other wise 0.
+	d1 -> v1 vector, d2 -> v2 vector, d3 -> v3 vector .......... dn -> vn vector , all vector is of same size as vocubulary, lets say m
+	we can create matrix of mXn each column is documents vector and each row tells words frequency in each documents ,or word presence if freq>0
+	
+	Now for a prompt "Hello World"
+	In documents , out of two words Hello, World how may are present
+	The matrix we can create above first go to Hello row, where frequency >0 -> give 1 to it else zero in that column
+	Now for each Document = [columns.sum()]/[len(column)or Vocab size]  gives score 0 to 1 , gave highest score documents
+	
+	Cons: Just Presence of Word Matter Not Frequency (doesn't capture , keywords contains multiple times)[No Frequency Handling]
+	
+	Handle:
+	Term Frequency Score: Not Just gives 1 or 0, Just Capture frequecy and Sum the freqeuncies accross columns 
+	And Do the Normalization by Number of Words in Document.
+	
+	Cons: Give Common Words and Rare Words Same Importance [No Difference Between Rare and Common Words in Documents]
+	Handle:
+	Document Frequency : [Number of Documents it appears in]/ [Total number of Document]
+	More DF , More Common
+	Inverse Document Frequency: 1/DF, for Normalization taking log of it log(1/df).
+	
+	calculating IDF Value For Each Word in System Vocubulary.
+	TFIDF: TF Matrix * IDF Matrix
+	
+5) Best Matching 25: BM25 (its 25 score or Formula Produced by its makers)
+	Introduce
+		 Term Frequency Saturation
+		 Document length Normalization: better way to Nomalizing TF Score Not Just divide by length of document, it regressously Panalized
