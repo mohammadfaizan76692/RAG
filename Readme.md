@@ -73,7 +73,7 @@ IDF = log(1 / DF)
 **TF-IDF**  
 TF-IDF = TF Matrix × IDF Matrix
 
-5. BM25 (Best Matching 25)
+#### 5. BM25 (Best Matching 25)
 
 - Ranking function derived from TF-IDF  
 
