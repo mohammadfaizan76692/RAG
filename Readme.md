@@ -63,14 +63,14 @@
 **Cons**
 - Common and rare words treated equally  
 
-**Document Frequency (DF)**
+**Document Frequency (DF)**  
 DF = Number of documents containing word / Total documents
 
-**Inverse Document Frequency (IDF)**
+**Inverse Document Frequency (IDF)**  
 IDF = log(1 / DF)
 
 
-**TF-IDF**
+**TF-IDF**  
 TF-IDF = TF Matrix × IDF Matrix
 
 5. BM25 (Best Matching 25)
