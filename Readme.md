@@ -1,3 +1,4 @@
+# RAG (Retrieval Augmented Generation)
 ## Week1
 ## Rag Introduction
 1) What is Rag
