@@ -32,3 +32,104 @@ Information Retrieval and Search Foundation
 	Introduce
 		 Term Frequency Saturation
 		 Document length Normalization: better way to Nomalizing TF Score Not Just divide by length of document, it regressously Panalized
+
+6) Sementic Search:
+	1) Euclidean: Measures the straight-line distance between two vectors in space.“How far apart are these two meanings?”
+		How it works in semantic search:
+			1)Treats embeddings as points in space.
+			2)Smaller distance = more similar.
+			3)Sensitive to magnitude (length) of vectors.
+			
+		When it’s useful:
+			1)When vector scale matters.
+			2)Less common for text embeddings unless vectors are normalized.
+	
+
+
+	2) Cosine Similarity: Measures the angle between two vectors (not their length). “Are these two meanings pointing in the same direction?”
+		How it works in semantic search:
+			1)Focuses on direction, not magnitude.
+			2)Most common choice for text embeddings.
+			
+		When it’s useful:
+			1)Comparing semantic meaning of text.
+			2)When vector length shouldn’t affect similarity.
+	
+	
+	3) Dot Product: Measures similarity by multiplying and summing vector components. “How much do these two meanings reinforce each other?”
+		How it works in semantic search:
+			1)Larger value = more similar.
+			2)Combines direction + magnitude.
+			3)If vectors are normalized, dot product = cosine similarity.
+			
+		When it’s useful:
+			1)High-performance search systems.
+			2)When embedding norms carry meaning.
+
+7) Hybrid Search:
+	1) Keyword Search : Using BM25. : Top 50 Documents on Basis of Score  -> Meta Data Filteration : 35 Remains (lets Say)
+	2) Semantic Search :Using Similarity between Embeddings. : Top 50 Documents on Basis of similarity -> Meta Data Filteration : 30 Remains (lets say)
+	
+8) Reciprocal Rank Fusion (Score Creating): If we have N list of Search ways:  RRF = 1/(k+ Rank in list 1) + 1/(k+ Rank in list2)  + 1/(k+ Rank in list 3) ............ + 1/(k+ Rank in list N)
+	Now from Point 7 , List1 (keyword search) has 35 documents and List2(Similarity search) has 30 documents
+	1) lets say document1 has Rank is List1 is 2 and in List2 is 1
+		let k = 0
+		score  for document1 = 1/(0+2) + 1/(0+1) = 1.5
+		
+	That's going to assign Score and ReRank All the Documents
+		
+	RRF : Doesn't Depend on Score of it Depend on Rank in Each List
+	
+	What Should be Value of k: if k = 0 , then Rank 1 score is (1) which is 10 times more score than Rank 10 (0.1), Rank 1 Dominate significantly
+				if k =50 ,  Rank1 score is 1/50 and Rank10 is 1/60  which is 1.2 times, Single high rank Doesn't Dominate Overall Ranking
+				
+	Beta: Weighting Semantic vs keyword, for Beta = 0.8,  New Score : RRF Score of Semantic * 0.8  + RRF Score of Keyword Search *0.2, beta  = 0.7
+	
+	All above is Hybrid Search.
+	
+9) Retrival Evaluation:  Is it Finding Relvant Documents and upto What Extent.
+	What you will need to Evaluate
+	1) Prompts
+	2) Ranked Result Documents for the given Prompts
+	3) Ground Truth what are the Actually Relevant Documents (if you want to Evaluate you retriever you need to know the correct Answers)
+	
+	PRECISION : No-of-Relevant Document Retrive by Retriever/ Total Retrieved : 
+	1) Penalizing Retriever for Returning Irrelevant Results
+	2) Want to Reducing False Positive
+	
+	Recall :  No-of-Relevant Document Retrive by Retriever/ No-of-Relevant Document Actually Present
+	1) Penalizing Retriever for  leaving out relevant documents
+	2) Want to Reduce False Negative
+	
+	
+	Retrival Metrics are influenced by how many documents the retriever returns
+	Metrics Are Discussed in Terms of TOP-K Documents
+	Define as Precision@k , and Recall@k
+	Example k =5
+	Precision@5 = (total Relevant Document till to 5 documents)/ 5
+	Recall@5 = (total Relevant Document till to 5 documents)/(Actual Number of Relevant Documents for the Given Query)
+	
+	MEAN AVERAGE PRECISION : MAP@K evaluates average precision for relevant Documents in first k documents
+	average precision@k  = (precision@1 + precision@2 + precision@3 + .................. +precision@k) /(total Relevant Document Retrieve till to k documents)
+	Now Calculating Average Precison@k for Many Prompts and take Mean of it. the you get your MAP (MEAN Average Precision)
+	MAP: Rewards Ranking Relevant Document Highly.
+	
+	Reciprocal Rank : Measures the Rank of the first relevant documents in the Returned list. 
+			 :1/ (Rank of first Relevant document in the list)
+	Mean Reciprocal Rank (MRR): Calculating Reciprocal Rank for Multiple Prompts and Take mean of it.	
+	
+	Summary:
+	Recall or recall@k: Most Cited metric, captures fundamental goal of finding relevant documents
+	Precision and MAP@K: Asses Irrelevant documents and Ranking effectiveness
+	Mean Reciprocal Rank: How Well model Performs at very top of Ranking
+	
+	Metrics help:
+	Evaluate retriever Performance.
+	Check if adjustmenst improve Results.
+	
+
+Graded Assignment : Implementing Retriever Functions in a RAG System
+Use a library to implement BM25 search
+Implement semantic search using vector embeddings
+Implement the Reciprocal Rank Fusion algorithm to combine BM25 and semantic search
+Analyze how different retrieval methods impact the responses generated by the LLM
